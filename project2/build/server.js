@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const product_entity_1 = require("./entities/product.entity");
 const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 const address = "0.0.0.0:3000";
@@ -12,8 +13,9 @@ app.get('/', function (req, res) {
     res.send('Hello World!');
 });
 //API Endpoints **Example**: A SHOW route: 'blogs/:id' [GET] 
-//products
+//show products
 app.get('/Products', function (req, res) {
+    res.send('show products\n   ' + (0, product_entity_1.getAllProduct)());
     /**
      *  Index
 - Show
@@ -22,12 +24,23 @@ app.get('/Products', function (req, res) {
 - [OPTIONAL] Products by category (args: product category)
 
      */
-    res.send('show products');
 });
-//Index
+//get product by id or Index
 app.get('/Products/id', function (req, res) {
-    const product = req.query.getProductById;
+    let id = 0;
+    id = Number(req.query.id);
+    console.log("id------------------------------------ " + id);
+    const product = (0, product_entity_1.getProductById)(id);
     res.send(product);
+});
+//create product
+app.get('/add_product', function (req, res) {
+    let name = String(req.query.name);
+    let price = Number(req.query.price);
+    let category = String(req.query.category);
+    let P = { name, price, category };
+    (0, product_entity_1.createProduct)(P);
+    res.send(P);
 });
 //user
 //Index [token required]

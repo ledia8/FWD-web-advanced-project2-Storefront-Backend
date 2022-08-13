@@ -16,8 +16,10 @@ export const getAllProduct = async (): Promise<Product[]> => {
 
 export const createProduct = async (Product: Product): Promise<Product> => {
     const { name, price, category } = Product;
-    const queryText = `INSERT INTO Product (name, price, category) VALUES ("p1", 7, "p1") RETURNING *`
-    const data = await db.query(queryText, [name, price, category])
-
-    return data.rows[0]
+    const queryText = `INSERT INTO Product (name, price, category) VALUES (?, ?, ?) RETURNING *`;
+    //console.log("query of create product ---   " + queryText);
+    const data = await db.query(queryText, [name, price, category]);
+    //console.log("data of create product ---   " + data);
+    return data.rows[0];
 }
+

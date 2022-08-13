@@ -1,7 +1,14 @@
-import express, { Request, Response } from 'express'
-import { getProductById } from './entities/product.entity';
-import cors from 'cors'
-import bodyParser from 'body-parser'
+import express, { Request, Response } from 'express';
+import { Product } from './models/product.model';
+import {User} from './models/user.model'
+import {Orders} from './models/order.model';
+import { getProductById, getAllProduct, createProduct} from './entities/product.entity';
+import {getUserById, getAllUsers, createUser} from './entities/user.entity';
+import {getOrderById,getAllOrders, createOrder} from './entities/order.entity'
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { idText } from 'typescript';
+import { Pool } from 'pg';
 
 
 const app: express.Application = express()
@@ -13,31 +20,38 @@ app.get('/', function (req: Request, res: Response) {
     res.send('Hello World!')
 })
 
+
 //API Endpoints **Example**: A SHOW route: 'blogs/:id' [GET] 
-//products
+//Index: show all products
 app.get('/Products',function (req: Request, res: Response) {
-    /**
-     *  Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
-
-     */
-    res.send('show products')
+    res.send('show products\n   ' + getAllProduct());
 })
-//Index
+
+//get product by id or Index
 app.get('/Products/id',function (req: Request, res: Response) {
-
-    const product= req.query.getProductById;
-
+	let id: number = 0;
+    id = Number(req.query.id);
+    console.log("id------------------------------------ " + id);
+    const product=  getProductById(id);
     res.send(product);
 })
+
+//create product
+app.get('/add_product',function (req: Request, res: Response) {
+    let name = String(req.query.name);
+    let price = Number(req.query.price);
+    let category = String(req.query.category);
+    let P: Product = { name, price, category };    
+    createProduct(P);
+	res.send("new product added  " + P);
+})
+
+
 //user
 //Index [token required]
 app.get('/user', (req: Request, res: Response) => {
     try {
-        res.send('this is the INDEX route')
+        res.send('show users\n   ' + getAllUsers());
     } catch (err) {
         res.status(400)
         res.json(err)
@@ -46,34 +60,61 @@ app.get('/user', (req: Request, res: Response) => {
 //Show [token required]
 app.get('/user/:id', (req: Request, res: Response) => {
     try {
-
-        res.send('this is the SHOW route')
+        let id: number = 0;
+        id = Number(req.query.id);
+        const user=  getUserById(id);
+        res.send(user);
     } catch (err) {
         res.status(400)
         res.json(err)
     }
 })
 
-
-app.get('/user',function(req:Request, res:Response){
-    /**
-     * 
-- 
-- Create N[token required]
-     */
-res.send("show users")
+//Create user
+app.get('/add_user',function(req:Request, res:Response){
+    let fname :string= String(req.query.fname);
+    let lname:string = String(req.query.lname);
+    let password:string = String(req.query.password);
+    let u: User = {fname, lname, password };    
+    createUser(u);
+	res.send("new user added  " + u);
 })
 
 //order
-app.get('/order',function(req:Request, res:Response){
-/**
- * Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
-
- */
-
-    res.send("show orders")
+//Index [token required]
+app.get('/order', (req: Request, res: Response) => {
+    try {
+        res.send('show orders\n   ' + getAllOrders());
+    } catch (err) {
+        res.status(400)
+        res.json(err)
+    }
 })
+//Show [token required]
+app.get('/order/:id', (req: Request, res: Response) => {
+    try {
+        let id: number = 0;
+        id = Number(req.query.id);
+        const order=  getOrderById(id);
+        res.send(order);
+    } catch (err) {
+        res.status(400)
+        res.json(err)
+    }
+})
+
+//Create order
+app.get('/add_order',function(req:Request, res:Response){
+    let productId = Number(req.query.productId);
+    let userId = Number(req.query.userId);
+    let productQuantity = Number(req.query.productQuantity);
+    let status_of_order = String(req.query.status_of_order);
+
+    let  order: Orders = { productId, userId, productQuantity, status_of_order};   
+    createOrder(order);
+	res.send("new user added  " + order);
+})
+
 
 
 

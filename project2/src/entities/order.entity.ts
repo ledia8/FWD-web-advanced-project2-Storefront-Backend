@@ -14,12 +14,9 @@ export const getAllOrders = async (): Promise<Orders[]> => {
     return data.rows
 }
 
-
-
-
-export const createUser = async (order: Orders): Promise<Orders> => {
+export const createOrder = async (order: Orders): Promise<Orders> => {
     const { productId, userId, productQuantity, status_of_order} = order;
-    const queryText = `INSERT INTO orders (productId, userId, productQuantity, status_of_order) VALUES ("ledia", "massoud", "123") RETURNING *`
+    const queryText = `INSERT INTO orders (productId, userId, productQuantity, status_of_order) VALUES (?, ?, ?) RETURNING *`
     const data = await db.query(queryText, [productId, userId, productQuantity, status_of_order])
 
     return data.rows[0]
