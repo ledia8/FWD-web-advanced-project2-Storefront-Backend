@@ -78,7 +78,7 @@ var createUser = function (user) { return __awaiter(void 0, void 0, void 0, func
         switch (_a.label) {
             case 0:
                 firstName = user.firstName, lastName = user.lastName, password = user.password;
-                queryText = "INSERT INTO users (firstName, lastName, password) VALUES (\"ledia\", \"massoud\", \"123\") RETURNING *";
+                queryText = "INSERT INTO users (firstName, lastName, password) VALUES \n                    (\"?\", \"?\", \"?\") RETURNING *";
                 hashpassword = bcrypt_1["default"].hashSync(password + "PEPPER", parseInt(String(process.env.SALT_ROUNDS)));
                 return [4 /*yield*/, database_1["default"].query(queryText, [firstName, lastName, hashpassword])];
             case 1:

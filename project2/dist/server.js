@@ -14,6 +14,13 @@ app.use(body_parser_1["default"].json());
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
+// const orderRoutes = (app: express.Application) => {
+//     app.get('/orders', index)
+//     app.get('/orders/:id', show)
+//     app.post('/orders', create)
+//     // add product
+//     app.post('/orders/:id/products', addProduct)
+// }
 //API Endpoints **Example**: A SHOW route: 'blogs/:id' [GET] 
 //Index: show all products
 app.get('/Products', function (req, res) {
@@ -63,11 +70,11 @@ app.get('/user/:id', function (req, res) {
 //Create user
 app.get('/add_user', function (req, res) {
     var fname = String(req.query.fname);
-    var lname = String(req.query.lname);
-    var password = String(req.query.password);
-    var u = { fname: fname, lname: lname, password: password };
-    (0, user_entity_1.createUser)(u);
-    res.send("new user added  " + u);
+    var lname = String(req.body.lname);
+    var password = String(req.body.password);
+    // let u: User = {fname, lname, password };    
+    // createUser(u);
+    res.send("new user added  " + fname + "   --- " + lname + "   ---  " + password);
 });
 //order
 //Index [token required]
@@ -106,3 +113,4 @@ app.get('/add_order', function (req, res) {
 app.listen(3000, function () {
     console.log("starting app on: ".concat(address));
 });
+exports["default"] = app;

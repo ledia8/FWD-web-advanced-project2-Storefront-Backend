@@ -20,6 +20,13 @@ app.get('/', function (req: Request, res: Response) {
     res.send('Hello World!')
 })
 
+// const orderRoutes = (app: express.Application) => {
+//     app.get('/orders', index)
+//     app.get('/orders/:id', show)
+//     app.post('/orders', create)
+//     // add product
+//     app.post('/orders/:id/products', addProduct)
+// }
 
 //API Endpoints **Example**: A SHOW route: 'blogs/:id' [GET] 
 //Index: show all products
@@ -70,14 +77,15 @@ app.get('/user/:id', (req: Request, res: Response) => {
     }
 })
 
+
 //Create user
 app.get('/add_user',function(req:Request, res:Response){
     let fname :string= String(req.query.fname);
-    let lname:string = String(req.query.lname);
-    let password:string = String(req.query.password);
-    let u: User = {fname, lname, password };    
-    createUser(u);
-	res.send("new user added  " + u);
+    let lname:string = String(req.body.lname);
+    let password:string = String(req.body.password);
+    // let u: User = {fname, lname, password };    
+    // createUser(u);
+	res.send("new user added  " + fname +"   --- " + lname +"   ---  " + password);
 })
 
 //order
@@ -121,3 +129,5 @@ app.get('/add_order',function(req:Request, res:Response){
 app.listen(3000, function () {
     console.log(`starting app on: ${address}`)
 })
+
+export default app;

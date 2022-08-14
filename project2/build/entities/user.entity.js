@@ -31,7 +31,8 @@ const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
 exports.getAllUsers = getAllUsers;
 const createUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstName, lastName, password } = user;
-    const queryText = `INSERT INTO users (firstName, lastName, password) VALUES ("ledia", "massoud", "123") RETURNING *`;
+    const queryText = `INSERT INTO users (firstName, lastName, password) VALUES 
+                    ("?", "?", "?") RETURNING *`;
     const hashpassword = bcrypt_1.default.hashSync(password + "PEPPER", parseInt(String(process.env.SALT_ROUNDS)));
     const data = yield database_1.default.query(queryText, [firstName, lastName, hashpassword]);
     return data.rows[0];

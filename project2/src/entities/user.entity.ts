@@ -21,7 +21,8 @@ export const getAllUsers = async (): Promise<User[]> => {
 
 export const createUser = async (user: User): Promise<User> => {
     const { firstName, lastName, password } = user;
-    const queryText = `INSERT INTO users (firstName, lastName, password) VALUES ("ledia", "massoud", "123") RETURNING *`
+    const queryText = `INSERT INTO users (firstName, lastName, password) VALUES 
+                    ("?", "?", "?") RETURNING *`
     const hashpassword = bcrypt.hashSync(
         password + "PEPPER", 
         parseInt(String(process.env.SALT_ROUNDS))

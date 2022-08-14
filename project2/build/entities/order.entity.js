@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createUser = exports.getAllOrders = exports.getOrderById = void 0;
+exports.createOrder = exports.getAllOrders = exports.getOrderById = void 0;
 const database_1 = __importDefault(require("../utils/database"));
 const getOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const queryText = `SELECT * FROM Orders WHERE id = $1`;
@@ -26,10 +26,10 @@ const getAllOrders = () => __awaiter(void 0, void 0, void 0, function* () {
     return data.rows;
 });
 exports.getAllOrders = getAllOrders;
-const createUser = (order) => __awaiter(void 0, void 0, void 0, function* () {
+const createOrder = (order) => __awaiter(void 0, void 0, void 0, function* () {
     const { productId, userId, productQuantity, status_of_order } = order;
-    const queryText = `INSERT INTO orders (productId, userId, productQuantity, status_of_order) VALUES ("ledia", "massoud", "123") RETURNING *`;
+    const queryText = `INSERT INTO orders (productId, userId, productQuantity, status_of_order) VALUES (?, ?, ?) RETURNING *`;
     const data = yield database_1.default.query(queryText, [productId, userId, productQuantity, status_of_order]);
     return data.rows[0];
 });
-exports.createUser = createUser;
+exports.createOrder = createOrder;
